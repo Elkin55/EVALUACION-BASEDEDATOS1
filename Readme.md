@@ -89,6 +89,4 @@ python main.py
 ## 👨‍💻 Autor
 
 **Elkin Renan Saltos Macías**
-Materia: Interacción Humano Computador
-Docente: Ing. Gómez Bravo Josselyn Tatiana
 
