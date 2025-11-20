@@ -1,92 +1,128 @@
-# 🟦 Sistema de Autenticación con MySQL + MongoDB (Python)
+Sistema de Autenticación con MySQL y MongoDB
 
-Proyecto en Python que implementa un sistema de autenticación con **registro**, **login**, **roles**, **recuperación simulada de contraseña**, **edición de perfil** y **registro de actividades** usando MySQL y MongoDB.
+Este proyecto implementa un sistema de autenticación utilizando dos bases de datos:
 
----
+MySQL (Clever Cloud) para almacenar los usuarios principales
 
-## 🚀 Tecnologías
+MongoDB Atlas para almacenar los datos complementarios y los registros (logs)
 
-* Python 3
-* MySQL (Clever Cloud)
-* MongoDB Atlas
-* bcrypt
-* mysql-connector-python
-* pymongo
+El sistema incluye registro, login, edición de perfil, recuperación de contraseña (simulada) y manejo de roles (admin/usuario), además de almacenamiento de logs de acceso.
 
----
+1. Requisitos
 
-## 📌 Funcionalidades
+Antes de instalar el sistema, es necesario contar con:
 
-✔ Registrar usuarios
-✔ Roles: **admin** y **user**
-✔ Login
-✔ Recuperar contraseña (simulada)
-✔ Editar email / contraseña
-✔ Logs de login en MongoDB
-✔ Hash seguro de contraseñas
+Python 3.10 o superior
 
----
+PIP instalado
 
-## 📂 Estructura
+Git instalado
 
-```
-main.py
-requirements.txt
-.env          # variables de entorno
-.gitignore
-README.md
-```
+Cuenta en MongoDB Atlas
 
----
+Cuenta en Clever Cloud (MySQL)
 
-## ⚙️ Configuración
+2. Instalación del proyecto
 
-### 1️⃣ Archivo `.env`
+Clonar el repositorio:
 
-```
-MYSQL_HOST=...
-MYSQL_USER=...
-MYSQL_PASSWORD=...
-MYSQL_DATABASE=...
-MYSQL_PORT=3306
-MONGO_URI=mongodb+srv://...
-```
+git clone https://github.com/TU_USUARIO/TU_REPO.git
+cd TU_REPO
 
-### 2️⃣ Tabla MySQL
 
-```sql
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    rol ENUM('admin','user') DEFAULT 'user',
-    created_at DATETIME
-);
-```
+Instalar dependencias:
 
----
-
-## ▶️ Ejecución
-
-```
 pip install -r requirements.txt
+
+
+Si no existe el archivo requirements.txt, instalar manualmente:
+
+pip install pymongo mysql-connector-python bcrypt
+
+3. Configuración de MongoDB Atlas
+
+Crear un Cluster en MongoDB Atlas.
+
+Ir a Network Access > Add IP Address.
+
+Seleccionar la opción: Allow access from anywhere (0.0.0.0/0).
+
+Crear un usuario en Database Access.
+
+Copiar la cadena de conexión del cluster, por ejemplo:
+
+mongodb+srv://USUARIO:CONTRASEÑA@CLUSTER.mongodb.net/?retryWrites=true&w=majority
+
+
+Reemplazar en el archivo main.py:
+
+MONGO_URI = "TU_URI_AQUI"
+
+4. Configuración de MySQL en Clever Cloud
+
+Crear una base de datos MySQL en Clever Cloud.
+
+Ir a Service/Environment variables.
+
+Copiar los valores proporcionados por la plataforma:
+
+MYSQL_ADDON_HOST
+
+MYSQL_ADDON_DB
+
+MYSQL_ADDON_USER
+
+MYSQL_ADDON_PASSWORD
+
+MYSQL_ADDON_PORT
+
+Colocar los valores correspondientes en main.py:
+
+MYSQL_HOST = "..."
+MYSQL_USER = "..."
+MYSQL_PASSWORD = "..."
+MYSQL_DATABASE = "..."
+MYSQL_PORT = 3306
+
+
+Crear la tabla necesaria ejecutando lo siguiente en MySQL:
+
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) UNIQUE,
+  email VARCHAR(100),
+  password_hash VARCHAR(255),
+  rol VARCHAR(20),
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+5. Ejecución del sistema
+
+Para iniciar la aplicación:
+
 python main.py
-```
 
----
 
-## ✔ Pruebas
+Se mostrará el menú principal:
 
-* Registrar usuario
-* Iniciar sesión y revisar logs en MongoDB
-* Recuperar contraseña
-* Editar perfil
-* Probar cuentas admin y user
+1. Registrar usuario
+2. Login
+3. Recuperar contraseña
+4. Editar perfil
+5. Salir
 
----
+6. Pruebas recomendadas
 
-## 👨‍💻 Autor
+Registro de usuario y verificación en MySQL y MongoDB.
 
-**Elkin Renan Saltos Macías**
+Inicio de sesión con credenciales correctas e incorrectas.
 
+Verificación de roles (admin y usuario).
+
+Edición de perfil (email y contraseña).
+
+Verificación de logs almacenados en MongoDB en la colección correspondiente.
+
+Autor
+
+Proyecto desarrollado por Elkin Saltos.
